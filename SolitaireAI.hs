@@ -36,17 +36,17 @@ findMoves board@(foundations,columns,reserve)
           emptyColumnExists = length columns < 8 
           emptyReserveExists = length reserve < 8
 
---Takes columns and a card (non-King) and returns true if the card can move to a column.
---The card can move to a column if its successor is the head of that column
-nonKingCardCanMove :: Columns -> Card -> Bool
-nonKingCardCanMove columns card = elem (sCard card) (map head (filter (not.null) columns))
-
 --Takes columns and returns the list of all head-cards unless the head card of a column of length 1 is a King
 --This is because a King which is the top-card of a column is in the right position and
 --shouldn't be moved.
 selectHeadsC :: [[Card]] -> [Card]
 selectHeadsC columns = [head column| column <- columns, (not . null) column, not (topCardisKing column)]
     where topCardisKing column = isKing (head column) && (length column == 1)
+
+--Takes columns and a card (non-King) and returns true if the card can move to a column.
+--The card can move to a column if its successor is the head of that column
+nonKingCardCanMove :: Columns -> Card -> Bool
+nonKingCardCanMove columns card = elem (sCard card) (map head (filter (not.null) columns))
 
 --Takes a board and a card and returns the board resulting from moving the card to a column, if it can be moved.
 moveCardColumns :: EOBoard -> Card -> EOBoard
